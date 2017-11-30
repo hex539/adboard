@@ -1,14 +1,12 @@
-#include <bits/stdc++.h>
+#include <map>
 #include <ncurses.h>
+#include <sstream>
+#include <string>
+#include <vector>
 using namespace std;
 
 constexpr int ESC_KEY = 'e';
 constexpr int TEXT_KEY = 't';
-
-static volatile bool exit_handler_called=false;
-static void exit_handler(int unused){
-    exit_handler_called=true;
-}
 
 static int send_command(vector<char const*> const parts){
     stringstream sst;
@@ -59,8 +57,8 @@ int main(){
 
     halfdelay(2 /*=200ms*/);
 
-    signal(SIGINT, exit_handler);
-    signal(SIGKILL, exit_handler);
+    static volatile bool exit_handler_called=false;
+    signal(SIGINT, [](int unused){exit_handler_called=true;});
 
     printw("Press %c to exit, %c to send text\n", ESC_KEY, TEXT_KEY);
     for (int ch; not exit_handler_called and (ch=getch())!=ESC_KEY;) if (ch!=ERR){
