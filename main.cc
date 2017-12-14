@@ -19,7 +19,7 @@ static int send_command(vector<char const*> const parts){
     }
     string s=sst.str();
     printw("%s\n", s.c_str());
-    return system(s.c_str());
+    return system((s+=" &").c_str());
 }
 
 // Returns exit code from system()
