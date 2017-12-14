@@ -1,5 +1,6 @@
 #include <map>
 #include <ncurses.h>
+#include <signal.h>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -49,6 +50,10 @@ static int send_keys(int keycode){
     return send_command({"adb","shell","input","keyevent",text.c_str()});
 }
 
+void usage(){
+    printw("Press %c to exit, %c to send text\n", ESC_KEY, TEXT_KEY);
+}
+
 int main(){
     initscr();
     raw();
@@ -60,8 +65,11 @@ int main(){
     static volatile bool exit_handler_called=false;
     signal(SIGINT, [](int unused){exit_handler_called=true;});
 
-    printw("Press %c to exit, %c to send text\n", ESC_KEY, TEXT_KEY);
+    usage();
     for (int ch; not exit_handler_called and (ch=getch())!=ESC_KEY;) if (ch!=ERR){
+        clear();
+        usage();
+
         if (ch==TEXT_KEY){
             printw("Text: ");
             stringstream text;
