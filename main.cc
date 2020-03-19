@@ -37,6 +37,9 @@ static int send_keys(int keycode){
         {KEY_ENTER, "ENTER"},
         {KEY_HOME, "HOME"},
         {KEY_BACKSPACE, "DEL"},
+        {' ', "DPAD_CENTER"},
+        {'0', "DPAD_CENTER"},
+        {0x14B, "DPAD_CENTER"},
         {0x0A, "ENTER"},
         {0x1B, "BACK"}
     };
